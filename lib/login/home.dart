@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'in/auth.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -69,7 +71,12 @@ class _HomePage extends State<HomePage> {
                         ),
                         elevation: 0,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => AuthSreen()),
+                        );
+                      },
                       child: Text(
                         'Sign in'.toUpperCase(),
                       ),

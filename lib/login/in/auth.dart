@@ -11,12 +11,26 @@ class AuthSreen extends StatefulWidget {
 class _AuthSreenState extends State<AuthSreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final RegExp emailRegex = RegExp(r"[a-z0-9\._-]+@[a-z0-9\._-]+\.[a-z]+");
-  late String _email;
+  String _email = " ";
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          titleSpacing: 0.0,
+          elevation: 0,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
         body: Center(
           child: SingleChildScrollView(
             padding: EdgeInsets.symmetric(
@@ -98,6 +112,11 @@ class _AuthSreenState extends State<AuthSreen> {
                             : () {
                                 if (_formKey.currentState!.validate()) {
                                   print(_email);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PasswordSreen()),
+                                  );
                                 }
                               },
                         child: Text(

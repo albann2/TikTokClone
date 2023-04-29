@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'term.dart';
+
 class PasswordSreen extends StatefulWidget {
   const PasswordSreen({super.key});
 
@@ -9,8 +11,8 @@ class PasswordSreen extends StatefulWidget {
 
 class _PasswordSreenState extends State<PasswordSreen> {
   bool _isSecret = true;
-  late String _pass;
-  late String _passw;
+  String _pass = " ";
+  String _passw = " ";
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
@@ -26,7 +28,9 @@ class _PasswordSreenState extends State<PasswordSreen> {
               Icons.arrow_back,
               color: Colors.black,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
         ),
         body: Center(
@@ -68,7 +72,7 @@ class _PasswordSreenState extends State<PasswordSreen> {
                                 ? Icons.visibility
                                 : Icons.visibility_off),
                           ),
-                          hintText: 'Ex: gvjbkjk',
+                          hintText: 'Ex: gvjbkjk8',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(0.0),
                             borderSide: BorderSide(color: Colors.grey),
@@ -124,6 +128,11 @@ class _PasswordSreenState extends State<PasswordSreen> {
                             : () {
                                 if (_formKey.currentState!.validate()) {
                                   print("yes");
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => TermSreen()),
+                                  );
                                 }
                               },
                         child: Text(

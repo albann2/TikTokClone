@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tiktokclone/screen/nav.dart';
 
 class TermSreen extends StatefulWidget {
   const TermSreen({super.key});
@@ -8,6 +9,23 @@ class TermSreen extends StatefulWidget {
 }
 
 class _TermSreenState extends State<TermSreen> {
+  bool _term = false;
+  late ScrollController _scroll;
+
+  @override
+  void initState() {
+    super.initState();
+    _scroll = ScrollController();
+    _scroll.addListener(() {
+      if (_scroll.offset >= _scroll.position.maxScrollExtent &&
+          !_scroll.position.outOfRange) {
+        setState(() {
+          _term = true;
+        });
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -25,7 +43,9 @@ class _TermSreenState extends State<TermSreen> {
               Icons.arrow_back,
               color: Colors.black,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
         ),
         body: Padding(
@@ -33,12 +53,14 @@ class _TermSreenState extends State<TermSreen> {
             left: 20.0,
             bottom: 15.0,
             right: 20.0,
+            top: 5.0,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
                 child: SingleChildScrollView(
+                  controller: _scroll,
                   physics: AlwaysScrollableScrollPhysics(),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -64,7 +86,15 @@ class _TermSreenState extends State<TermSreen> {
                     borderRadius: BorderRadius.circular(0),
                   ),
                 ),
-                onPressed: () => print('Send'),
+                onPressed: !_term
+                    ? null
+                    : () {
+                        print('Send');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => NavPage()),
+                        );
+                      },
                 child: Text(
                   'Read & Accept'.toUpperCase(),
                 ),
