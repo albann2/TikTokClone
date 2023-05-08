@@ -8,11 +8,12 @@ import 'profil/profil.dart';
 const _kPages = <String, Widget>{
   'profil': ProfilPage(),
   'Home': AddPage(),
-  'Build': BuildPage(),
+  'Build': AddVideo(),
 };
 
 class NavPage extends StatefulWidget {
-  const NavPage({super.key});
+  final Function(int) onChangedStep;
+  const NavPage({super.key, required this.onChangedStep});
 
   @override
   _NavPage createState() => _NavPage();

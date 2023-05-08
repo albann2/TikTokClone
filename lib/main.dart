@@ -1,19 +1,46 @@
 import 'package:flutter/material.dart';
 import 'login/home.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'login/up/service/userService.dart';
+import 'screen/nav.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   // This widget is the root of your application.
+  UserService userService = UserService();
+
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: StreamBuilder(
+        stream: userService.user,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasData) {
+              return NavPage(
+                onChangedStep: (int) {},
+              );
+            }
+
+            return HomePage();
+          }
+
+          return SafeArea(
+            child: Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 }

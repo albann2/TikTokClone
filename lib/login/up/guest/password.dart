@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:tiktokclone/screen/nav.dart';
 
-class AuthSreenIn extends StatefulWidget {
-  const AuthSreenIn({super.key});
+import 'term.dart';
+
+class PasswordSreen extends StatefulWidget {
+  final Function(int, String) onChangedStep;
+  const PasswordSreen({super.key, required this.onChangedStep});
 
   @override
-  State<AuthSreenIn> createState() => _AuthSreenStateIn();
+  State<PasswordSreen> createState() => _PasswordSreenState();
 }
 
-class _AuthSreenStateIn extends State<AuthSreenIn> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final RegExp emailRegex = RegExp(r"[a-z0-9\._-]+@[a-z0-9\._-]+\.[a-z]+");
-  String _email = " ";
+class _PasswordSreenState extends State<PasswordSreen> {
   bool _isSecret = true;
   String _pass = " ";
+  String _passw = " ";
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,7 @@ class _AuthSreenStateIn extends State<AuthSreenIn> {
               color: Colors.black,
             ),
             onPressed: () {
-              Navigator.pop(context);
+              widget.onChangedStep(1, " ");
             },
           ),
         ),
@@ -41,52 +42,38 @@ class _AuthSreenStateIn extends State<AuthSreenIn> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                RichText(
-                  text: TextSpan(
-                    text: 'Everyone Has\n'.toUpperCase(),
-                    children: [
-                      TextSpan(
-                        text: 'Knowledge\n'.toUpperCase(),
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      TextSpan(
-                        text: 'To Share.'.toUpperCase(),
-                      ),
-                    ],
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 30.0,
-                    ),
-                  ),
-                ),
                 Text(
-                  'IT all start here.',
+                  "Password".toUpperCase(),
                   style: TextStyle(
-                    fontStyle: FontStyle.italic,
+                    fontSize: 30.0,
                   ),
                 ),
                 SizedBox(
-                  height: 30.0,
+                  height: 50.0,
                 ),
                 Form(
                   key: _formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Text('Enter your email'),
+                      Text('Enter your password'),
                       SizedBox(
-                        height: 8,
+                        height: 10,
                       ),
                       TextFormField(
-                        onChanged: (value) => setState(() => _email = value),
-                        validator: (value) =>
-                            value!.isEmpty || !emailRegex.hasMatch(value)
-                                ? 'Please enter a valid email'
-                                : null,
+                        onChanged: (value) => setState(() => _passw = value),
+                        validator: (value) => value!.length < 8
+                            ? 'Enter a password, 8 characters min requiered'
+                            : null,
+                        obscureText: _isSecret,
                         decoration: InputDecoration(
+                          suffixIcon: InkWell(
+                            onTap: () => setState(() => _isSecret = !_isSecret),
+                            child: Icon(!_isSecret
+                                ? Icons.visibility
+                                : Icons.visibility_off),
+                          ),
+                          hintText: 'Ex: gvjbkjk8',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(0.0),
                             borderSide: BorderSide(color: Colors.grey),
@@ -97,15 +84,23 @@ class _AuthSreenStateIn extends State<AuthSreenIn> {
                           ),
                         ),
                       ),
-                      Text('Enter your password'),
                       SizedBox(
-                        height: 8,
+                        height: 10.0,
+                      ),
+                      Text('Confirme your password'),
+                      SizedBox(
+                        height: 10,
                       ),
                       TextFormField(
                         onChanged: (value) => setState(() => _pass = value),
-                        validator: (value) => value!.length < 8
-                            ? 'Enter a password, 8 characters min requiered'
-                            : null,
+                        validator: (value) {
+                          if (value!.isEmpty || _passw.isEmpty) {
+                            return 'password not match';
+                          } else {
+                            if (value != _passw) return 'password not match';
+                          }
+                          return null;
+                        },
                         obscureText: _isSecret,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
@@ -129,21 +124,18 @@ class _AuthSreenStateIn extends State<AuthSreenIn> {
                           ),
                           elevation: 0,
                         ),
-                        onPressed: !emailRegex.hasMatch(_email)
+                        onPressed: _pass.length < 8
                             ? null
                             : () {
-                                if (_pass.length >= 8) {
-                                  if (_formKey.currentState!.validate()) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => NavPage(
-                                                onChangedStep: (int) {},
-                                              )),
-                                    );
-                                  }
+                                if (_formKey.currentState!.validate()) {
+                                  print("yes");
+                                  widget.onChangedStep(3, _pass);
+                                  /*Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => TermSreen()),
+                                  );*/
                                 }
-                                return;
                               },
                         child: Text(
                           'Continue'.toUpperCase(),

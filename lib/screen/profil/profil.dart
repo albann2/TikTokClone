@@ -12,6 +12,9 @@ class _ProfilPageState extends State<ProfilPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: const CircleAvatar(
+          backgroundColor: Colors.black,
+        ),
         centerTitle: true,
         backgroundColor: Colors.black,
         title: Text(

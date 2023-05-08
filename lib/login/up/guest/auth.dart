@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:tiktokclone/screen/nav.dart';
+import 'password.dart';
 
-class AuthSreenIn extends StatefulWidget {
-  const AuthSreenIn({super.key});
+class AuthSreen extends StatefulWidget {
+  final Function(int, String) onChangedStep;
+
+  const AuthSreen({super.key, required this.onChangedStep});
 
   @override
-  State<AuthSreenIn> createState() => _AuthSreenStateIn();
+  State<AuthSreen> createState() => _AuthSreenState();
 }
 
-class _AuthSreenStateIn extends State<AuthSreenIn> {
+class _AuthSreenState extends State<AuthSreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final RegExp emailRegex = RegExp(r"[a-z0-9\._-]+@[a-z0-9\._-]+\.[a-z]+");
   String _email = " ";
-  bool _isSecret = true;
-  String _pass = " ";
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +69,7 @@ class _AuthSreenStateIn extends State<AuthSreenIn> {
                   ),
                 ),
                 SizedBox(
-                  height: 30.0,
+                  height: 50.0,
                 ),
                 Form(
                   key: _formKey,
@@ -78,7 +78,7 @@ class _AuthSreenStateIn extends State<AuthSreenIn> {
                     children: [
                       Text('Enter your email'),
                       SizedBox(
-                        height: 8,
+                        height: 20,
                       ),
                       TextFormField(
                         onChanged: (value) => setState(() => _email = value),
@@ -87,27 +87,7 @@ class _AuthSreenStateIn extends State<AuthSreenIn> {
                                 ? 'Please enter a valid email'
                                 : null,
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(0.0),
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(0.0),
-                            borderSide: BorderSide(color: Colors.grey),
-                          ),
-                        ),
-                      ),
-                      Text('Enter your password'),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      TextFormField(
-                        onChanged: (value) => setState(() => _pass = value),
-                        validator: (value) => value!.length < 8
-                            ? 'Enter a password, 8 characters min requiered'
-                            : null,
-                        obscureText: _isSecret,
-                        decoration: InputDecoration(
+                          hintText: 'Ex: Alban@gmail.com',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(0.0),
                             borderSide: BorderSide(color: Colors.grey),
@@ -132,18 +112,15 @@ class _AuthSreenStateIn extends State<AuthSreenIn> {
                         onPressed: !emailRegex.hasMatch(_email)
                             ? null
                             : () {
-                                if (_pass.length >= 8) {
-                                  if (_formKey.currentState!.validate()) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => NavPage(
-                                                onChangedStep: (int) {},
-                                              )),
-                                    );
-                                  }
+                                if (_formKey.currentState!.validate()) {
+                                  print(_email);
+                                  widget.onChangedStep(1, _email);
+                                  /*Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PasswordSreen()),
+                                  );*/
                                 }
-                                return;
                               },
                         child: Text(
                           'Continue'.toUpperCase(),

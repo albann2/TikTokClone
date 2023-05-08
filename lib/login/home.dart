@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'in/auth.dart';
+import 'up/guest.dart';
+//import 'in/auth.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -74,14 +75,14 @@ class _HomePage extends State<HomePage> {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => AuthSreen()),
+                          MaterialPageRoute(builder: (context) => GuestLogin()),
                         );
                       },
                       child: Text(
-                        'Sign in'.toUpperCase(),
+                        'Sign up'.toUpperCase(),
                       ),
                     ),
-                    SizedBox(
+                    /*SizedBox(
                       height: 10.0,
                     ),
                     ElevatedButton(
@@ -92,11 +93,17 @@ class _HomePage extends State<HomePage> {
                         ),
                         elevation: 0,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AuthSreenIn()),
+                        );
+                      },
                       child: Text(
-                        'Sign up'.toUpperCase(),
+                        'Sign in'.toUpperCase(),
                       ),
-                    ),
+                    ),*/
                   ],
                 ),
               ],
