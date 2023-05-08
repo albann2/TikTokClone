@@ -1,43 +1,42 @@
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
-
+import '../login/home.dart';
 import 'build/build.dart';
+// ignore: unused_import
 import 'home/home.dart';
 import 'profil/profil.dart';
 
 const _kPages = <String, Widget>{
   'profil': ProfilPage(),
-  'Home': AddPage(),
+  'Home': HomePage(),
   'Build': BuildPage(),
 };
 
 class NavPage extends StatefulWidget {
-  const NavPage({super.key});
+  const NavPage({required Key key}) : super(key: key);
 
   @override
-  _NavPage createState() => _NavPage();
+  _NavPageState createState() => _NavPageState();
 }
 
-class _NavPage extends State<NavPage> {
+class _NavPageState extends State<NavPage> {
   TabStyle _tabStyle = TabStyle.reactCircle;
   Color back = Colors.black;
+
+  final List<Widget> _pages = [
+    for (final page in _kPages.values)
+      page,
+  ];
+  int _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
-      initialIndex: 1,
+      length: _kPages.length,
+      initialIndex: _selectedIndex,
       child: Scaffold(
-        body: Column(
-          children: [
-            Expanded(
-              child: TabBarView(
-                children: [
-                  for (final icon in _kPages.values) icon,
-                ],
-              ),
-            ),
-          ],
+        body: TabBarView(
+          children: _pages,
         ),
         bottomNavigationBar: ConvexAppBar(
           style: _tabStyle,
@@ -67,74 +66,13 @@ class _NavPage extends State<NavPage> {
           ],
           color: Colors.white,
           activeColor: const Color.fromARGB(255, 76, 86, 139),
-          onTap: (int i) => print('click index=$i'),
+          onTap: (int i) {
+            setState(() {
+              _selectedIndex = i;
+            });
+          },
         ),
       ),
     );
   }
 }
-/*import 'package:flutter/material.dart';
-
-import 'chat/chat.dart';
-import 'status/statut.dart';
-
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 1;
-  Color mainColor = Color.fromARGB(255, 255, 255, 255);
-
-  final PageController _pageController = PageController(initialPage: 1);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        children: <Widget>[
-          StatusPage(),
-          ChatPage(),
-          StatusPage(),
-          //CommunityPage(),
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: mainColor,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.remove_red_eye),
-            label: 'Statut',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
-            label: 'Discussion',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Statut',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.black,
-        unselectedItemColor: Colors.grey,
-        onTap: (index) {
-          _pageController.animateToPage(
-            index,
-            duration: Duration(milliseconds: 500),
-            curve: Curves.easeInOut,
-          );
-        },
-      ),
-    );
-  }
-}*/

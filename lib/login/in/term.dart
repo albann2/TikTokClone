@@ -90,9 +90,10 @@ class _TermSreenState extends State<TermSreen> {
                     ? null
                     : () {
                         print('Send');
+                        final GlobalKey key = GlobalKey();
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => NavPage()),
+                          MaterialPageRoute(builder: (context) => NavPage(key:key)),
                         );
                       },
                 child: Text(
